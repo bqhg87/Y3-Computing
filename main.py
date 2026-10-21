@@ -1,5 +1,6 @@
 import astropy.units as u
 import numpy as np
+from visualiser import create_orbital_plot
 
 # CONSTANTS:
 
@@ -13,6 +14,8 @@ eccentricity_EM = 0.0549
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
+# finding COM:
+
 def calc_r_COM(m1, m2, d): # where r1 is the distance from m1 to COM etc.
     r1 = d * (m2 / (m1 + m2))
     r2 = d * (m1 / (m1 + m2))
@@ -21,15 +24,33 @@ def calc_r_COM(m1, m2, d): # where r1 is the distance from m1 to COM etc.
 def calc_periapsis(a, eccentricity):
     return a * (1.0 - eccentricity)
 
-r_perigee = calc_periapsis(a_EM, eccentricity_EM) # perigee = closest E-M approach
+r_perigee = calc_periapsis(a_EM, eccentricity_EM) # perigee: closest E-M approach
 r_E, r_M = calc_r_COM(m_E, m_M, r_perigee) # COM distances with elliptical orbit
 r_E_circular, r_M_circular = calc_r_COM(m_E, m_M, d_EM) # COM "" circular orbit
 
 pos_E = np.array([-r_E, 0.0, 0.0])
 pos_M = np.array([r_M, 0.0, 0.0])
+pos_E_circular = np.array([-r_E_circular, 0.0, 0.0])
+pos_M_circular = np.array([r_M_circular, 0.0, 0.0])
 
 print("Earth Position COM frame:", pos_E)
 print("Moon Position COM frame: ", pos_M)
+print("Old Earth COM Position:", pos_E_circular)
+print("Old Moon COM Position: ", pos_M_circular)
 
-print("Old Earth COM Position:", np.array([-r_E_circular, 0.0, 0.0]))
-print("Old Moon COM Position: ", np.array([-r_M_circular, 0.0, 0.0]))
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+
+# visualiser
+
+system = {
+    "Earth": {"pos": pos_E, "color": "blue", "size": 100},
+    "Moon": {"pos": pos_M, "color": "grey", "size": 50},
+    "COM Origin": {
+        "pos": np.array([0.0, 0.0, 0.0]),
+        "color": "red",
+        "size": 50,
+        "marker": "x",
+    },
+}
+
+create_orbital_plot(system)
