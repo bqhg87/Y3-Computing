@@ -6,8 +6,20 @@ def create_orbital_plot(system):
   # lock roll (by enforcing azimuth / elevation only rotation style)
   mpl.rcParams["axes3d.mouserotationstyle"] = "azel"
 
-  fig = plt.figure(figsize=(9, 7))
+  fig = plt.figure(figsize=(9, 7), facecolor="black")
   ax = fig.add_subplot(projection="3d")
+
+  ax.set_facecolor("black")
+  ax.xaxis.set_pane_color((0.1, 0.1, 0.1, 0.5))
+  ax.yaxis.set_pane_color((0.1, 0.1, 0.1, 0.5))
+  ax.zaxis.set_pane_color((0.1, 0.1, 0.1, 0.5))
+  ax.set_xlabel("X (m)", color="white")
+  ax.set_ylabel("Y (m)", color="white")
+  ax.set_zlabel("Z (m)", color="white")
+  ax.tick_params(colors="white")
+  ax.xaxis._axinfo["grid"]["color"] = (0.3, 0.3, 0.3, 0.5)
+  ax.yaxis._axinfo["grid"]["color"] = (0.3, 0.3, 0.3, 0.5)
+  ax.zaxis._axinfo["grid"]["color"] = (0.3, 0.3, 0.3, 0.5)
 
   # plot all bodies from the dictionary
   scatters = {}

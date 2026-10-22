@@ -3,10 +3,6 @@ import numpy as np
 from visualiser import create_orbital_plot
 import matplotlib.pyplot as plt
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-
-# CONSTANTS:
-
 G = (6.6726e-11 * (u.m**3 / (u.kg * u.s**2))).value
 m_E = (5.9742e24 * u.kg).to_value(u.kg)
 m_M = (7.35e22 * u.kg).to_value(u.kg)
@@ -17,33 +13,12 @@ eccentricity_EM = 0.0549
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
-# COM:
+# ORBITS + VELOCITIES:
 
 def calc_r_COM(m1, m2, d): # where r1 is the distance from m1 to COM etc.
     r1 = d * (m2 / (m1 + m2))
     r2 = d * (m1 / (m1 + m2))
     return r1, r2
-
-def calc_periapsis(a, eccentricity):
-    return a * (1.0 - eccentricity)
-
-r_perigee = calc_periapsis(a_EM, eccentricity_EM) # perigee: closest E-M approach
-r_E, r_M = calc_r_COM(m_E, m_M, r_perigee) # COM distances with elliptical orbit
-r_E_circular, r_M_circular = calc_r_COM(m_E, m_M, d_EM) # COM "" circular orbit
-
-pos_E_perigee = np.array([-r_E, 0.0, 0.0])
-pos_M_perigee = np.array([r_M, 0.0, 0.0])
-pos_E_circular = np.array([-r_E_circular, 0.0, 0.0])
-pos_M_circular = np.array([r_M_circular, 0.0, 0.0])
-
-print("Old Earth COM Position (Perigee):", pos_E_perigee)
-print("Old Moon COM Position (Perigee): ", pos_M_perigee)
-print("Old Earth COM Position (Circular):", pos_E_circular)
-print("Old Moon COM Position (Circular): ", pos_M_circular)
-
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-
-# ORBITS + VELOCITIES:
 
 def calc_orbital_state(a, eccentricity, m1, m2, true_anomaly_deg, G): # pos + vel for 2-body system at a given true anomaly
     nu = np.radians(true_anomaly_deg)
@@ -51,8 +26,7 @@ def calc_orbital_state(a, eccentricity, m1, m2, true_anomaly_deg, G): # pos + ve
     p = a * (1.0 - eccentricity**2)  # semi-latus rectum
     r_rel = p / (1.0 + eccentricity * np.cos(nu))
 
-    r1_COM = r_rel * (m2 / (m1 + m2))
-    r2_COM = r_rel * (m1 / (m1 + m2))
+    r1_COM, r2_COM = calc_r_COM(m1, m2, r_rel)
 
     # unit vectors in xy plane
     unit_r = np.array([np.cos(nu), np.sin(nu), 0.0]) # aligned with r
@@ -73,19 +47,16 @@ def calc_orbital_state(a, eccentricity, m1, m2, true_anomaly_deg, G): # pos + ve
 
 true_anomaly_deg = 0.0 # 0 perigee, 180 apogee
 
-pos_E, pos_M, vel_E, vel_M = calc_orbital_state(a_EM, eccentricity_EM, m_E, m_M, true_anomaly_deg, G)
-
-print("Earth Position COM frame:", pos_E)
-print("Moon Position COM frame: ", pos_M)
-print("Earth Velocity:", vel_E)
-print("Moon Velocity: ", vel_M)
-
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
 # VISUALISER:
 
+# UPDATE TO REMOVE EARTH / MOON DEPENDENCE
+# CUSTOM PARTICLES?
+# CHANGE REFERENCE POINT / Origin
+
 a_vis = a_EM
-eccentricity_vis = 0.5
+eccentricity_vis = eccentricity_EM
 deg_vis = 0.0
 m1_vis = m_E
 m2_vis = m_M
@@ -102,16 +73,14 @@ pos_E, pos_M, vel_E, vel_M = update_state()
 system = {
     "Earth": {"pos": pos_E, "color": "blue", "size": 100},
     "Moon": {"pos": pos_M, "color": "grey", "size": 50},
-    "COM Origin": {"pos": np.array([0.0, 0.0, 0.0]), "color": "red", "size": 50, "marker": "x"},
+    "COM": {"pos": np.array([0.0, 0.0, 0.0]), "color": "white", "size": 25, "marker": "x"},
 }
 
 fig, ax, scatters = create_orbital_plot(system)
 
 # debug: locking axis limits prevents visualisation from collapsing
 limit = a_vis * 1.2
-ax.set_xlim([-limit, limit])
-ax.set_ylim([-limit, limit])
-ax.set_zlim([-limit, limit])
+ax.set_xlim([-limit, limit]), ax.set_ylim([-limit, limit]), ax.set_zlim([-limit, limit])
 
 # trail:
 earth_x, earth_y, earth_z = [], [], []
