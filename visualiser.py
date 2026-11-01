@@ -26,9 +26,7 @@ def create_orbital_plot(system):
   for name, data in system.items():
     pos = data["pos"]
     scatters[name] = ax.scatter(
-        pos[0],
-        pos[1],
-        pos[2],
+        pos[0], pos[1], pos[2],
         color=data.get("color", "blue"),
         s=data.get("size", 50),
         marker=data.get("marker", "o"),
