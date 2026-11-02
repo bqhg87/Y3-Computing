@@ -20,16 +20,16 @@ a_Jupiter, e_Jupiter    =    (7.7833e8 * u.km).to_value(u.m), 0.0489
 a_Saturn, e_Saturn      =    (1.4291e9 * u.km).to_value(u.m), 0.0547
 
 VIS = {
-    "Sun":           {"color": "gold",    "size": 250},
-    "Mercury":       {"color": "silver",  "size": 40},
-    "Venus":         {"color": "orange",  "size": 80},
-    "Earth":         {"color": "blue",    "size": 100},
-    "Moon":          {"color": "grey",    "size": 30},
-    "Mars":          {"color": "red",     "size": 70},
-    "Jupiter":       {"color": "sienna",  "size": 180},
-    "Saturn":        {"color": "khaki",   "size": 150},
-    "COM":           {"color": "white",   "size": 25,  "marker": "x"},
-    "Test Particle": {"color": "cyan",  "size": 40,  "marker": "h"}
+    "Sun":           {"color": "gold", "size": 250},
+    "Mercury":       {"color": "silver", "size": 40},
+    "Venus":         {"color": "orange", "size": 80},
+    "Earth":         {"color": "blue", "size": 100},
+    "Moon":          {"color": "grey", "size": 30},
+    "Mars":          {"color": "red", "size": 70},
+    "Jupiter":       {"color": "sienna", "size": 180},
+    "Saturn":        {"color": "khaki", "size": 150},
+    "COM":           {"color": "white", "size": 25, "marker": "x"},
+    "Test Particle": {"color": "cyan", "size": 40, "marker": "h"}
 }
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
@@ -53,5 +53,7 @@ M_TEST = 1000.0
 
 SHOW_COM = False
 SHOW_TELEMETRY = True
-SHOW_LEGEND = False
-SHOW_GRID = False
+SHOW_LEGEND = True
+SHOW_GRID = True
+SHOW_AXIS_LABELS = True
+SHOW_TICK_LABELS = True

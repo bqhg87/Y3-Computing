@@ -38,11 +38,15 @@ def create_orbital_plot(system):
     )
 
   # labels and legend
-  ax.set_xlabel("X (m)")
-  ax.set_ylabel("Y (m)")
-  ax.set_zlabel("Z (m)")
+  if SHOW_AXIS_LABELS:
+    ax.set_xlabel("X (m)", color="white")
+    ax.set_ylabel("Y (m)", color="white")
+    ax.set_zlabel("Z (m)", color="white")
+  if SHOW_TICK_LABELS:
+    ax.tick_params(colors="white", labelcolor="white")
   ax.view_init(elev=30, azim=-60, roll=0)
-  if SHOW_LEGEND: legend = ax.legend(loc="upper right", facecolor=(0.1, 0.1, 0.1, 0.5), edgecolor="none", labelcolor="white", prop={"family": "monospace", "size": 9})
+  if SHOW_LEGEND:
+    legend = ax.legend(loc="upper right", facecolor=(0.1, 0.1, 0.1, 0.5), edgecolor="none", labelcolor="white", prop={"family": "monospace", "size": 9})
 
 
   plt.tight_layout()
