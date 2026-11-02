@@ -98,7 +98,6 @@ if USE_L2:
         f = (1.0 - m_ratio) / (x_L2 + m_ratio)**2 + m_ratio / (x_L2 - 1.0 + m_ratio)**2 - x_L2 # gravitational potentials M/r**2 (m1, m2, centrifugal)
         df = -2.0 * (1.0 - m_ratio) / (x_L2 + m_ratio)**3 - 2.0 * m_ratio / (x_L2 - 1.0 + m_ratio)**3 - 1.0
         x_L2 -= f / df
-
     r_test = x_L2 * (pos_2 - pos_1)
     v_test = x_L2 * (vel_M - vel_E)
 else:
@@ -116,6 +115,12 @@ if SHOW_COM: system["COM"] = {"pos": np.array([0.0, 0.0, 0.0]), **VIS["COM"]}
 if SHOW_TEST_PARTICLE: system["Test Particle"] = {"pos": r_test, **VIS["Test Particle"]}
 
 fig, ax, scatters = create_orbital_plot(system)
+
+paused = [False]
+def on_key(event):
+    if event.key == ' ' or event.key == 'escape':
+        paused[0] = not paused[0]
+fig.canvas.mpl_connect('key_press_event', on_key)
 
 limit = a_12 * 1.5
 ax.set_xlim([-limit, limit]), ax.set_ylim([-limit, limit]), ax.set_zlim([-limit, limit])
@@ -135,6 +140,16 @@ if SHOW_TELEMETRY:
 try:
     while plt.fignum_exists(fig.number):
         for _ in range(steps_per_frame): # repeat 4th-order runge-kutta for each step
+            if paused[0]:
+                if SHOW_TELEMETRY:
+                    info_text.set_text(
+                        f"Time: {t / 86400.0:.2f} days [PAUSED]\n"
+                        f"Test Position: [{r_test[0]:.2e}, {r_test[1]:.2e}, {r_test[2]:.2e}] m\n"
+                        f"Gravitational Force: {(np.linalg.norm(acc) * m_test):.4e} N"
+                    )
+                plt.pause(0.1)
+                continue
+
             h = dt
             t_n = t
             

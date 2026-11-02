@@ -42,7 +42,7 @@ def create_orbital_plot(system):
   ax.set_ylabel("Y (m)")
   ax.set_zlabel("Z (m)")
   ax.view_init(elev=30, azim=-60, roll=0)
-  if SHOW_LEGEND: ax.legend(loc="upper right")
+  if SHOW_LEGEND: legend = ax.legend(loc="upper right", facecolor=(0.1, 0.1, 0.1, 0.5), edgecolor="none", labelcolor="white", prop={"family": "monospace", "size": 9})
 
 
   plt.tight_layout()

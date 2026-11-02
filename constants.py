@@ -29,7 +29,7 @@ VIS = {
     "Jupiter":       {"color": "sienna",  "size": 180},
     "Saturn":        {"color": "khaki",   "size": 150},
     "COM":           {"color": "white",   "size": 25,  "marker": "x"},
-    "Test Particle": {"color": "yellow",  "size": 40,  "marker": "*"}
+    "Test Particle": {"color": "cyan",  "size": 40,  "marker": "h"}
 }
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
@@ -52,6 +52,6 @@ V_TEST = np.array([500.0, -1000.0, -200.0])
 M_TEST = 1000.0
 
 SHOW_COM = False
-SHOW_TELEMETRY = False
+SHOW_TELEMETRY = True
 SHOW_LEGEND = False
 SHOW_GRID = False
